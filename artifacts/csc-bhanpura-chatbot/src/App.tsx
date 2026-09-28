@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useSendChat } from '@workspace/api-client-react';
 import {
   BadgeInfo,
   BookOpen,
@@ -301,6 +302,7 @@ function App() {
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const nextId = useRef(2);
+  const chatMutation = useSendChat();
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -310,14 +312,40 @@ function App() {
     const clean = value.trim();
     if (!clean || isTyping) return;
     const userMessage: Message = { id: nextId.current++, from: 'user', text: clean };
+    const history = messages.slice(-8).map((message) => ({
+      role: message.from === 'bot' ? ('assistant' as const) : ('user' as const),
+      content: message.text,
+    }));
     setMessages((current) => [...current, userMessage]);
     setInput('');
     setIsTyping(true);
-    window.setTimeout(() => {
-      const response = answerFor(clean);
-      setMessages((current) => [...current, { ...response, id: nextId.current++, from: 'bot' }]);
-      setIsTyping(false);
-    }, 420);
+    chatMutation.mutate(
+      { data: { message: clean, history } },
+      {
+        onSuccess: (response) => {
+          setMessages((current) => [
+            ...current,
+            { id: nextId.current++, from: 'bot', text: response.message },
+          ]);
+          setIsTyping(false);
+        },
+        onError: () => {
+          setMessages((current) => [
+            ...current,
+            {
+              id: nextId.current++,
+              from: 'bot',
+              text: 'AI response abhi available nahi hai. Aap apna sawaal dobara bhej sakte hain ya CSC Bhanpura se seedha contact karke service confirm kar sakte hain.',
+              steps: [
+                'OTP, PIN ya password chat mein share na karein.',
+                'Exact fee aur requirement CSC Bhanpura ya official portal se confirm hogi.',
+              ],
+            },
+          ]);
+          setIsTyping(false);
+        },
+      },
+    );
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

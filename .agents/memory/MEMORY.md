@@ -1,0 +1,1 @@
+- [Groq CSC chatbot integration](groq-csc-chat.md) — verify model access live and keep server-side guardrails for unverified fees, URLs, deadlines, and requirements.
