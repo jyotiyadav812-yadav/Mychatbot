@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useSendChat } from '@workspace/api-client-react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   BadgeInfo,
   BookOpen,
@@ -40,6 +41,8 @@ type Service = {
   icon: typeof FileText;
   tint: string;
 };
+
+const queryClient = new QueryClient();
 
 const LOCATION = 'Yadav Chopal, Bhanpura Gaav, Haryana';
 const ONLINE_NOTE =
@@ -530,4 +533,12 @@ function App() {
   );
 }
 
-export default App;
+function RootApp() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  );
+}
+
+export default RootApp;
