@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CSC Bhanpura Customer Support"
+description = "A friendly Hindi and Hinglish customer support chatbot for Common Service Centre Bhanpura, helping villagers understand online forms, government services, documents, payments, and digital assistance."
+version = "1.0.0"
+id = "artifacts/csc-bhanpura-chatbot"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23775
+
+[services.development]
+run = "pnpm --filter @workspace/csc-bhanpura-chatbot run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/csc-bhanpura-chatbot", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/csc-bhanpura-chatbot/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23775"
+BASE_PATH = "/"
