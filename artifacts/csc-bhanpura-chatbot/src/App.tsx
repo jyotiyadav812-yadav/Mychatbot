@@ -45,16 +45,16 @@ type Service = {
 const queryClient = new QueryClient();
 
 const LOCATION = 'Yadav Chopal, Bhanpura Gaav, Haryana';
-const ONLINE_NOTE =
-  'You can also get your work done online from CSC Bhanpura, so you may contact us before visiting the centre.';
+const CENTER_NOTE =
+  'Aap apna kaam khud online karne ki zaroorat nahi hai — CSC Bhanpura centre par aakar staff se karwa sakte hain.';
 
 const initialMessage: Message = {
   id: 1,
   from: 'bot',
-  text: 'Namaste. Main CSC Bhanpura ka digital help desk hoon. Aap kisi bhi online service ke baare mein pooch sakte hain — main documents, OTP, biometrics, fee aur official approval ke baare mein seedhi jaankari dunga.',
+  text: 'Namaste. Main CSC Bhanpura ka digital help desk hoon. Aap apna online ya sarkari kaam khud karne ki zaroorat nahi hai — centre par aakar staff se karwa sakte hain. Main bataunga ki kaun se documents saath laane hain.',
   steps: [
-    'Neeche kisi service ko chun sakte hain, ya apna sawaal seedha likh sakte hain.',
-    'Agar kisi kaam ke liye aapko centre aana zaroori ho, main pehle bata dunga.',
+    'Neeche apni service chun sakte hain, ya apna kaam seedha likh sakte hain.',
+    'CSC Bhanpura centre par aakar staff se form, application, payment ya print ka kaam karwa sakte hain.',
   ],
   quickReplies: ['Online form bharna hai', 'Aadhaar guidance', 'Certificate banwana hai'],
 };
@@ -72,16 +72,16 @@ const services: Service[] = [
 
 function answerFor(question: string): Omit<Message, 'id' | 'from'> {
   const text = question.toLowerCase().trim();
-  const common = `\n\n${ONLINE_NOTE}`;
+  const common = `\n\n${CENTER_NOTE}`;
 
   if (/aadhaar|aadhar|आधार/.test(text)) {
     return {
-      text: `Aadhaar mein update, download, print ya status check ke liye CSC Bhanpura aapko process samjha sakta hai. OTP ya biometric ki zaroorat service par depend karegi.${common}`,
+      text: `Aadhaar update, download, print ya status check ka kaam CSC Bhanpura centre par aakar staff se karwa sakte hain. OTP ya biometric ki zaroorat service par depend karegi.${common}`,
       steps: [
-        'Aadhaar number ya enrolment details saath rakhein.',
-        'Registered mobile par aane wala OTP aapko khud enter karna hoga.',
+        'Aadhaar number ya enrolment details saath lekar centre par aayen.',
+        'Registered mobile saath rakhein; OTP centre par aap khud enter karenge.',
         'Jahan biometric lage, verification centre par hi hoga.',
-        'Exact requirement, fee aur approval official portal ke hisaab se confirm honge.',
+        'Exact requirement, fee aur approval CSC Bhanpura par confirm hoga.',
       ],
       quickReplies: ['Aadhaar update ke liye kya chahiye?', 'Aadhaar print karna hai'],
     };
@@ -89,12 +89,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/pan|पैन/.test(text)) {
     return {
-      text: `PAN card application ya correction mein CSC Bhanpura form, document upload aur acknowledgement mein madad kar sakta hai. Final approval Income Tax ke official process se hota hai.${common}`,
+      text: `PAN card application ya correction ka kaam CSC Bhanpura centre par aakar staff se karwa sakte hain. Staff form, document upload aur acknowledgement mein madad karega; final approval Income Tax department ka hota hai.${common}`,
       steps: [
-        'Identity aur address proof ki clear copy rakhein.',
-        'Mobile number aur email active rakhein, agar portal maange.',
-        'Photo/signature ki file format aur size official portal ke mutabik honi chahiye.',
-        'Exact fee aur documents application ke waqt official portal par confirm honge.',
+        'Identity aur address proof ki clear copy lekar centre par aayen.',
+        'Apna active mobile number saath rakhein.',
+        'Photo/signature available ho to saath laayen; format centre par confirm hoga.',
+        'Exact fee aur documents CSC Bhanpura par confirm honge.',
       ],
       quickReplies: ['PAN ke liye documents?', 'PAN correction karni hai'],
     };
@@ -102,12 +102,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/voter|मतदाता|election|epic/.test(text)) {
     return {
-      text: `Voter ID ke liye new registration, correction, address shift aur status check mein online assistance mil sakti hai. Eligibility aur approval Election Commission ke official portal par depend karta hai.${common}`,
+      text: `Voter ID ka new registration, correction, address shift ya status check ka kaam CSC Bhanpura centre par aakar staff se karwa sakte hain. Eligibility aur approval Election Commission ka hota hai.${common}`,
       steps: [
-        'Naam, janam-tithi aur current address ki details ready rakhein.',
-        'Portal ke hisaab se identity ya residence proof upload ho sakta hai.',
-        'Application ke baad reference number se status dekha ja sakta hai.',
-        'Exact documents aur timeline official portal se confirm hongi.',
+        'Naam, janam-tithi aur current address ki details saath lekar aayen.',
+        'Identity ya residence proof ki clear copy saath rakhein.',
+        'Purana voter ID ya reference number ho to saath laayen.',
+        'Exact documents aur timeline CSC Bhanpura par confirm hongi.',
       ],
       quickReplies: ['Naya voter ID banana hai', 'Voter ID correction'],
     };
@@ -115,12 +115,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/certificate|प्रमाण|income|जाति|caste|residence|domicile|birth|death/.test(text)) {
     return {
-      text: `Income, caste, residence aur doosre certificates ke online application mein CSC Bhanpura madad kar sakta hai. Certificate issue karna sambandhit sarkari department ki approval par depend karta hai.${common}`,
+      text: `Income, caste, residence aur doosre certificate ka application CSC Bhanpura centre par aakar staff se karwa sakte hain. Certificate issue sambandhit sarkari department ki approval par depend karta hai.${common}`,
       steps: [
-        'Aap kis certificate ke liye apply kar rahe hain, yeh pehle confirm hoga.',
-        'Aadhaar, address proof aur supporting document ki clear copy rakhein.',
-        'OTP ya verification ke baad form submit hoga.',
-        'Exact documents, fee aur processing time official portal/department se confirm honge.',
+        'Jis certificate ka kaam hai, uska naam bata kar centre par aayen.',
+        'Aadhaar, address proof aur supporting document ki clear copy saath rakhein.',
+        'OTP ya verification centre par aapki sahmati se hoga.',
+        'Exact documents, fee aur processing time CSC Bhanpura par confirm honge.',
       ],
       quickReplies: ['Income certificate', 'Caste certificate', 'Residence certificate'],
     };
@@ -128,12 +128,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/scholarship|छात्रवृत्ति| छात्रवृत्ति|scholar/.test(text)) {
     return {
-      text: `Scholarship application mein registration, form filling aur document upload ki online help mil sakti hai. Eligibility, last date aur approval scheme ke official portal se hi confirm honge.${common}`,
+      text: `Scholarship application ka registration, form filling aur document upload CSC Bhanpura centre par aakar staff se karwa sakte hain. Eligibility aur approval scheme ke department ka hota hai.${common}`,
       steps: [
-        'Student details, school/college details aur bank account information ready rakhein.',
-        'Aadhaar, income certificate, marksheet ya doosre papers scheme ke mutabik lag sakte hain.',
-        'OTP aapke registered mobile par aa sakta hai.',
-        'Submit karne se pehle form ki details aapke saamne verify ki jayengi.',
+        'Student details, school/college details aur active mobile saath rakhein.',
+        'Aadhaar, income certificate, marksheet ya doosre papers saath laayen.',
+        'Bank details ki zaroorat ho sakti hai; ise chat mein share na karein.',
+        'Form submit karne se pehle details aapke saamne verify ki jayengi.',
       ],
       quickReplies: ['Scholarship documents?', 'Scholarship status check'],
     };
@@ -141,12 +141,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/job|naukri|रोजगार|exam|pariksha|भर्ती|recruitment|admit/.test(text)) {
     return {
-      text: `Job, recruitment ya exam form bharne mein CSC Bhanpura online assistance de sakta hai. Vacancy ki eligibility, fee aur deadline hamesha official notification se confirm karein.${common}`,
+      text: `Job, recruitment ya exam form bharne ka kaam CSC Bhanpura centre par aakar staff se karwa sakte hain. Vacancy ki eligibility, fee aur deadline official notification ke hisaab se confirm hogi.${common}`,
       steps: [
-        'Official notification ya application link saath rakhein.',
-        'Photo, signature, ID proof aur qualification documents ready rakhein.',
-        'Form submit karne se pehle naam, category aur date of birth check karein.',
-        'Payment hua ho to acknowledgement/receipt zaroor save karein.',
+        'Official notification ya application link ho to saath lekar aayen.',
+        'Photo, signature, ID proof aur qualification documents saath rakhein.',
+        'Naam, category aur date of birth ki details centre par verify karenge.',
+        'Payment ke baad acknowledgement/receipt centre se lein.',
       ],
       quickReplies: ['Job form bharna hai', 'Exam admit card download'],
     };
@@ -154,12 +154,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/admission|school|college|दाखिला|प्रवेश/.test(text)) {
     return {
-      text: `School ya college admission ke online form, document upload aur status check mein madad mil sakti hai. Admission rules, eligibility, fee aur dates institution ke official portal se confirm hongi.${common}`,
+      text: `School ya college admission ka online form, document upload aur status check CSC Bhanpura centre par aakar staff se karwa sakte hain. Admission rules, eligibility, fee aur dates institution ke hisaab se confirm hongi.${common}`,
       steps: [
-        'Student ka naam, DOB, contact aur previous marksheet ready rakhein.',
-        'Photo, signature aur required certificates ki clear files rakhein.',
-        'Form submit karne se pehle course aur category details check karein.',
-        'Acknowledgement number ko sambhal kar rakhein.',
+        'Student ka naam, DOB, contact aur previous marksheet saath laayen.',
+        'Photo, signature aur required certificates ki clear copies rakhein.',
+        'Course aur category details centre par verify karenge.',
+        'Application ke baad acknowledgement number centre se lein.',
       ],
       quickReplies: ['Admission form bharna hai', 'Documents upload help'],
     };
@@ -167,12 +167,12 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/recharge|bill|payment|bijli|electricity|mobile|रिचार्ज|भुगतान/.test(text)) {
     return {
-      text: `Mobile recharge aur bill payment ke liye online assistance mil sakti hai. Operator, biller, amount aur final status payment se pehle aapko verify karna hoga.${common}`,
+      text: `Mobile recharge aur bill payment CSC Bhanpura centre par aakar staff se karwa sakte hain. Operator, biller aur amount aapke saamne verify karke hi payment hoga.${common}`,
       steps: [
-        'Mobile number ya consumer number dhyan se check karein.',
-        'Amount aur biller ka naam confirm karke hi aage badhein.',
+        'Mobile number ya consumer number saath lekar centre par aayen.',
+        'Amount aur biller ka naam aapke saamne confirm hoga.',
         'OTP/PIN kabhi kisi ko na batayein; payment aapki permission se hi hoga.',
-        'Exact service charge, agar koi ho, payment se pehle CSC Bhanpura se confirm hoga.',
+        'Exact service charge, agar koi ho, CSC Bhanpura par confirm hoga.',
       ],
       quickReplies: ['Mobile recharge', 'Bijli bill payment'],
     };
@@ -180,11 +180,11 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/photo|scan|print|pdf|photocopy|दस्तावेज|document|प्रिंट/.test(text)) {
     return {
-      text: `Photo, scan, photocopy, print aur PDF banane ki suvidha CSC Bhanpura mein mil sakti hai. Aap file WhatsApp/USB/email ya centre par available method se de sakte hain — method pehle confirm kar lein.${common}`,
+      text: `Photo, scan, photocopy, print aur PDF ka kaam CSC Bhanpura centre par aakar karwa sakte hain. Original document ya file saath laayen; staff available method se kaam kar dega.${common}`,
       steps: [
-        'Original document saaf aur poora lekar aayen.',
+        'Original document saaf aur poora lekar centre par aayen.',
         'Required page size, copies aur colour/black-white preference bata dein.',
-        'PDF banne ke baad naam aur pages check kar lein.',
+        'PDF banne ke baad naam aur pages aapke saamne check honge.',
         'Exact fee kaam ki quantity aur format dekhkar CSC Bhanpura confirm karega.',
       ],
       quickReplies: ['PDF banwani hai', 'Photo print karna hai'],
@@ -193,11 +193,11 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/form|online|application|apply|ऑनलाइन|फॉर्म/.test(text)) {
     return {
-      text: `Online form bharne mein CSC Bhanpura aapko registration, details fill karne, document upload aur acknowledgement save karne mein help kar sakta hai.${common}`,
+      text: `Online form bharne ka kaam CSC Bhanpura centre par aakar staff se karwa sakte hain. Staff registration, details fill karne, document upload aur acknowledgement mein madad karega.${common}`,
       steps: [
-        'Application ka official portal ya link saath rakhein.',
-        'Mobile number, email, ID aur supporting documents ready rakhein.',
-        'OTP aapko khud batana ya enter karna hoga; OTP kisi aur se share na karein.',
+        'Application ka official portal ya link ho to saath lekar aayen.',
+        'Mobile number, email, ID aur supporting documents saath rakhein.',
+        'OTP aap khud enter karein; OTP kisi ko bhi share na karein.',
         'Final submit se pehle poora form aapke saamne verify kiya jayega.',
       ],
       quickReplies: ['Job form', 'Certificate form', 'Admission form'],
@@ -206,14 +206,14 @@ function answerFor(question: string): Omit<Message, 'id' | 'from'> {
 
   if (/hello|hi|namaste|नमस्ते|help|madad|सहायता/.test(text)) {
     return {
-      text: `Bilkul, main madad ke liye yahin hoon. Aap service ka naam ya apna kaam likh dein — jaise “PAN apply”, “certificate”, “job form” ya “Aadhaar update”.${common}`,
+      text: `Bilkul, aap apna kaam karwane ke liye CSC Bhanpura centre par aa sakte hain. Service ka naam likh dein — jaise “PAN apply”, “certificate”, “job form” ya “Aadhaar update”.${common}`,
       quickReplies: ['Online form bharna hai', 'PAN card apply karna hai', 'Print aur PDF work'],
     };
   }
 
   return {
-    text: 'Main is sawaal ko poori tarah samajh nahi paaya. Main forms, certificates, jobs, scholarships, admissions, PAN, Aadhaar, voter services, recharge aur print/scan work mein help kar sakta hoon.',
-    steps: ['Aap kis service ke liye madad chahte hain? Service ka naam ya portal ka naam likh dein.'],
+    text: 'Aap apna kaam CSC Bhanpura centre par aakar karwa sakte hain. Main forms, certificates, jobs, scholarships, admissions, PAN, Aadhaar, voter services, recharge aur print/scan work mein madad karta hoon.',
+    steps: ['Aap kis service ka kaam karwana chahte hain? Service ka naam likh dein.'],
   };
 }
 
