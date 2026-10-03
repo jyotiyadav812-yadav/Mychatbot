@@ -90,6 +90,10 @@ components:
           maxItems: 12
           items:
             $ref: "#/components/schemas/ChatHistoryMessage"
+        language:
+          type: string
+          enum: [hindi, english]
+          description: Language selected by the customer for the assistant response.
       required:
         - message
     ChatResponse:

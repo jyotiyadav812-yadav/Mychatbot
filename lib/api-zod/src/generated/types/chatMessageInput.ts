@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { ChatHistoryMessage } from './chatHistoryMessage';
+import type { ChatMessageInputLanguage } from './chatMessageInputLanguage';
 
 export interface ChatMessageInput {
   /**
@@ -15,4 +16,6 @@ export interface ChatMessageInput {
   message: string;
   /** @maxItems 12 */
   history?: ChatHistoryMessage[];
+  /** Language selected by the customer for the assistant response. */
+  language?: ChatMessageInputLanguage;
 }

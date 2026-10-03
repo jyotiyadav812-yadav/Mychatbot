@@ -9,6 +9,7 @@
 export * from './chatHistoryMessage';
 export * from './chatHistoryMessageRole';
 export * from './chatMessageInput';
+export * from './chatMessageInputLanguage';
 export * from './chatResponse';
 export * from './errorResponse';
 export * from './healthStatus';

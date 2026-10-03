@@ -35,9 +35,11 @@ type Message = {
   quickReplies?: string[];
 };
 
+type Language = 'hindi' | 'english';
+
 type Service = {
-  label: string;
-  prompt: string;
+  label: Record<Language, string>;
+  prompt: Record<Language, string>;
   icon: typeof FileText;
   tint: string;
 };
@@ -48,26 +50,97 @@ const LOCATION = 'Yadav Chopal, Bhanpura Gaav, Haryana';
 const CENTER_NOTE =
   'Aap apna kaam khud online karne ki zaroorat nahi hai — CSC Bhanpura centre par aakar staff se karwa sakte hain.';
 
-const initialMessage: Message = {
-  id: 1,
-  from: 'bot',
-  text: 'Namaste. Main CSC Bhanpura ka digital help desk hoon. Aap apna online ya sarkari kaam khud karne ki zaroorat nahi hai — centre par aakar staff se karwa sakte hain. Main bataunga ki kaun se documents saath laane hain.',
-  steps: [
-    'Neeche apni service chun sakte hain, ya apna kaam seedha likh sakte hain.',
-    'CSC Bhanpura centre par aakar staff se form, application, payment ya print ka kaam karwa sakte hain.',
-  ],
-  quickReplies: ['Online form bharna hai', 'Aadhaar guidance', 'Certificate banwana hai'],
+const uiCopy: Record<Language, {
+  welcome: string;
+  welcomeSteps: string[];
+  welcomeReplies: string[];
+  helpDesk: string;
+  you: string;
+  sidebarEyebrow: string;
+  safeHelpTitle: string;
+  safeHelpBody: string;
+  today: string;
+  quickServices: string;
+  inputLabel: string;
+  inputPlaceholder: string;
+  sendLabel: string;
+  safety: string;
+  allServices: string;
+  serviceQuestion: string;
+  beforeVisit: string;
+  beforeVisitBody: string;
+  generalGuidance: string;
+  errorText: string;
+  errorSteps: string[];
+}> = {
+  hindi: {
+    welcome: 'नमस्ते। मैं CSC भानपुरा का डिजिटल हेल्प डेस्क हूँ। आपको अपना ऑनलाइन या सरकारी काम खुद करने की जरूरत नहीं है — सेंटर पर आकर स्टाफ से करवा सकते हैं। मैं बताऊंगा कि कौन से दस्तावेज साथ लाने हैं।',
+    welcomeSteps: ['नीचे अपनी सेवा चुनें या अपना काम सीधे लिखें।', 'CSC भानपुरा सेंटर पर आकर फॉर्म, आवेदन, भुगतान या प्रिंट का काम स्टाफ से करवाएं।'],
+    welcomeReplies: ['ऑनलाइन फॉर्म भरवाना है', 'आधार का काम है', 'सर्टिफिकेट बनवाना है'],
+    helpDesk: 'CSC हेल्प डेस्क',
+    you: 'आप',
+    sidebarEyebrow: 'आप यहां पूछ सकते हैं',
+    safeHelpTitle: 'सीधी और सुरक्षित मदद',
+    safeHelpBody: 'OTP, PIN या पासवर्ड किसी के साथ साझा न करें। अंतिम मंजूरी हमेशा सरकारी विभाग की होती है।',
+    today: 'आज की सेवा',
+    quickServices: 'जल्दी से सेवा चुनें',
+    inputLabel: 'अपना सवाल लिखें',
+    inputPlaceholder: 'अपना सवाल लिखें — जैसे “PAN का काम करवाना है”',
+    sendLabel: 'सवाल भेजें',
+    safety: 'OTP/PIN चैट में कभी न लिखें। सही शुल्क, दस्तावेज और मंजूरी CSC भानपुरा या आधिकारिक पोर्टल से पक्की होगी।',
+    allServices: 'सभी सेवाएं',
+    serviceQuestion: 'आपको किस काम में मदद चाहिए?',
+    beforeVisit: 'सेंटर आने से पहले',
+    beforeVisitBody: 'अपना काम और दस्तावेज पहले पूछ लें। इससे आपकी यात्रा आसान रहेगी।',
+    generalGuidance: 'यह हेल्प डेस्क सामान्य जानकारी देता है। अंतिम मंजूरी CSC के हाथ में नहीं होती।',
+    errorText: 'AI जवाब अभी उपलब्ध नहीं है। आप अपना सवाल दोबारा भेजें या CSC भानपुरा से सीधे संपर्क करके सेवा पक्की कर लें।',
+    errorSteps: ['OTP, PIN या पासवर्ड चैट में साझा न करें।', 'सही शुल्क और जरूरत CSC भानपुरा या आधिकारिक पोर्टल से पक्की होगी।'],
+  },
+  english: {
+    welcome: 'Hello. I am the CSC Bhanpura digital help desk. You do not need to complete your online or government work yourself — visit the centre and get it done with staff. I can tell you which documents to bring.',
+    welcomeSteps: ['Choose a service below or type your work directly.', 'Visit CSC Bhanpura to get forms, applications, payments, or printing done with staff help.'],
+    welcomeReplies: ['Get an online form filled', 'Aadhaar work', 'Get a certificate made'],
+    helpDesk: 'CSC help desk',
+    you: 'You',
+    sidebarEyebrow: 'You can ask about',
+    safeHelpTitle: 'Clear and safe help',
+    safeHelpBody: 'Never share an OTP, PIN, or password. Final approval always comes from the government department.',
+    today: "Today's service",
+    quickServices: 'Choose a service quickly',
+    inputLabel: 'Write your question',
+    inputPlaceholder: 'Write your question — e.g. “I need help with PAN”',
+    sendLabel: 'Send question',
+    safety: 'Never write an OTP/PIN in chat. Confirm exact fees, requirements, and approval with CSC Bhanpura or the official portal.',
+    allServices: 'All services',
+    serviceQuestion: 'What work do you need help with?',
+    beforeVisit: 'Before visiting the centre',
+    beforeVisitBody: 'Ask about your work and documents first. It will make your visit easier.',
+    generalGuidance: 'This help desk provides general guidance. Final approval is not handled by CSC.',
+    errorText: 'The AI response is temporarily unavailable. Please send your question again or contact CSC Bhanpura directly to confirm the service.',
+    errorSteps: ['Never share an OTP, PIN, or password in chat.', 'Confirm exact fees and requirements with CSC Bhanpura or the official portal.'],
+  },
 };
 
+function createInitialMessage(language: Language): Message {
+  const copy = uiCopy[language];
+  return {
+    id: 1,
+    from: 'bot',
+    text: copy.welcome,
+    steps: copy.welcomeSteps,
+    quickReplies: copy.welcomeReplies,
+  };
+}
+
 const services: Service[] = [
-  { label: 'Forms & applications', prompt: 'Online form bharna hai', icon: FileText, tint: 'service-sun' },
-  { label: 'Certificates', prompt: 'Certificate banwana hai', icon: Stamp, tint: 'service-mint' },
-  { label: 'Jobs & exams', prompt: 'Job form ya exam bharna hai', icon: BriefcaseBusiness, tint: 'service-coral' },
-  { label: 'Scholarships', prompt: 'Scholarship ke baare mein batao', icon: GraduationCap, tint: 'service-lilac' },
-  { label: 'Aadhaar guidance', prompt: 'Aadhaar ka kaam hai', icon: IdCard, tint: 'service-aqua' },
-  { label: 'PAN card', prompt: 'PAN card apply karna hai', icon: FileCheck2, tint: 'service-rose' },
-  { label: 'Voter services', prompt: 'Voter ID ka kaam hai', icon: Vote, tint: 'service-sand' },
-  { label: 'Print, scan & PDF', prompt: 'Photo scan print karna hai', icon: Printer, tint: 'service-blue' },
+  { label: { hindi: 'फॉर्म और आवेदन', english: 'Forms & applications' }, prompt: { hindi: 'ऑनलाइन फॉर्म भरवाना है', english: 'I need help with an online form' }, icon: FileText, tint: 'service-sun' },
+  { label: { hindi: 'सर्टिफिकेट', english: 'Certificates' }, prompt: { hindi: 'सर्टिफिकेट बनवाना है', english: 'I need a certificate' }, icon: Stamp, tint: 'service-mint' },
+  { label: { hindi: 'नौकरी और परीक्षा', english: 'Jobs & exams' }, prompt: { hindi: 'जॉब फॉर्म या परीक्षा फॉर्म भरवाना है', english: 'I need help with a job or exam form' }, icon: BriefcaseBusiness, tint: 'service-coral' },
+  { label: { hindi: 'स्कॉलरशिप', english: 'Scholarships' }, prompt: { hindi: 'स्कॉलरशिप का काम है', english: 'I need help with a scholarship' }, icon: GraduationCap, tint: 'service-lilac' },
+  { label: { hindi: 'आधार का काम', english: 'Aadhaar guidance' }, prompt: { hindi: 'आधार का काम है', english: 'I need Aadhaar help' }, icon: IdCard, tint: 'service-aqua' },
+  { label: { hindi: 'PAN कार्ड', english: 'PAN card' }, prompt: { hindi: 'PAN कार्ड का काम करवाना है', english: 'I need help with PAN card work' }, icon: FileCheck2, tint: 'service-rose' },
+  { label: { hindi: 'वोटर सेवाएं', english: 'Voter services' }, prompt: { hindi: 'वोटर ID का काम है', english: 'I need voter ID help' }, icon: Vote, tint: 'service-sand' },
+  { label: { hindi: 'प्रिंट, स्कैन और PDF', english: 'Print, scan & PDF' }, prompt: { hindi: 'फोटो स्कैन और प्रिंट करवाना है', english: 'I need printing, scanning, or PDF work' }, icon: Printer, tint: 'service-blue' },
 ];
 
 function answerFor(question: string): Omit<Message, 'id' | 'from'> {
@@ -226,8 +299,9 @@ function BrandMark() {
   );
 }
 
-function ChatBubble({ message, onQuickReply }: { message: Message; onQuickReply: (value: string) => void }) {
+function ChatBubble({ message, language, onQuickReply }: { message: Message; language: Language; onQuickReply: (value: string) => void }) {
   const isBot = message.from === 'bot';
+  const copy = uiCopy[language];
   return (
     <div className={`chat-rise flex gap-3 ${isBot ? 'items-start' : 'items-end justify-end'}`} data-testid={`message-${message.id}`}>
       {isBot && (
@@ -269,7 +343,7 @@ function ChatBubble({ message, onQuickReply }: { message: Message; onQuickReply:
           </div>
         )}
         <span className={`mt-1.5 block font-mono text-[9px] uppercase tracking-[.15em] text-[hsl(var(--muted-foreground))] ${isBot ? 'text-left' : 'text-right'}`}>
-          {isBot ? 'CSC help desk' : 'Aap'}
+          {isBot ? copy.helpDesk : copy.you}
         </span>
       </div>
       {!isBot && (
@@ -281,31 +355,34 @@ function ChatBubble({ message, onQuickReply }: { message: Message; onQuickReply:
   );
 }
 
-function ServiceTile({ service, onSelect }: { service: Service; onSelect: (prompt: string) => void }) {
+function ServiceTile({ service, language, onSelect }: { service: Service; language: Language; onSelect: (prompt: string) => void }) {
   const Icon = service.icon;
+  const label = service.label[language];
   return (
     <button
       type="button"
-      onClick={() => onSelect(service.prompt)}
-      data-testid={`button-service-${service.label.toLowerCase().replace(/[^a-z]+/g, '-')}`}
+      onClick={() => onSelect(service.prompt[language])}
+      data-testid={`button-service-${label.toLowerCase().replace(/[^a-z]+/g, '-')}`}
       className="group flex min-h-[100px] flex-col justify-between rounded-2xl border border-[hsl(var(--card-border))] bg-[hsl(var(--card))] p-3.5 text-left shadow-[0_5px_18px_rgba(33,38,64,.035)] transition duration-200 hover:-translate-y-1 hover:border-[hsl(var(--primary)/.35)] hover:shadow-[var(--shadow-card)]"
     >
       <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${service.tint} text-[hsl(var(--foreground))] transition-transform duration-200 group-hover:scale-105`}>
         <Icon size={18} strokeWidth={1.9} />
       </span>
-      <span className="mt-3 text-[12px] font-semibold leading-4 text-[hsl(var(--foreground))]">{service.label}</span>
+      <span className="mt-3 text-[12px] font-semibold leading-4 text-[hsl(var(--foreground))]">{label}</span>
     </button>
   );
 }
 
 function App() {
-  const [messages, setMessages] = useState<Message[]>([initialMessage]);
+  const [language, setLanguage] = useState<Language>('hindi');
+  const [messages, setMessages] = useState<Message[]>([createInitialMessage('hindi')]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const nextId = useRef(2);
   const chatMutation = useSendChat();
+  const copy = uiCopy[language];
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

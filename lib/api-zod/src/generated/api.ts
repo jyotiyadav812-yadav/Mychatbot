@@ -33,7 +33,8 @@ export const SendChatBody = zod.object({
   "history": zod.array(zod.object({
   "role": zod.enum(['user', 'assistant']),
   "content": zod.string().min(1)
-})).max(sendChatBodyHistoryMax).optional()
+})).max(sendChatBodyHistoryMax).optional(),
+  "language": zod.enum(['hindi', 'english']).optional().describe('Language selected by the customer for the assistant response.')
 })
 
 export const SendChatResponse = zod.object({

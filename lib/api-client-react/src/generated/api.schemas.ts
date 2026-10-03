@@ -23,6 +23,17 @@ export interface ChatHistoryMessage {
   content: string;
 }
 
+/**
+ * Language selected by the customer for the assistant response.
+ */
+export type ChatMessageInputLanguage = typeof ChatMessageInputLanguage[keyof typeof ChatMessageInputLanguage];
+
+
+export const ChatMessageInputLanguage = {
+  hindi: 'hindi',
+  english: 'english',
+} as const;
+
 export interface ChatMessageInput {
   /**
      * @minLength 1
@@ -31,6 +42,8 @@ export interface ChatMessageInput {
   message: string;
   /** @maxItems 12 */
   history?: ChatHistoryMessage[];
+  /** Language selected by the customer for the assistant response. */
+  language?: ChatMessageInputLanguage;
 }
 
 export interface ChatResponse {
